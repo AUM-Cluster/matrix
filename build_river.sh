@@ -16,7 +16,7 @@ step_confirm() {
 
 # 1단계: 필수 라이브러리 및 도구 설치
 echo -e "\n[1단계] 빌드 환경 구성 (Debian 13)"
-sudo apt update && sudo apt install -y git build-essential pkg-config \
+apt update && sudo apt install -y git build-essential pkg-config \
     libwlroots-0.18-dev wayland-protocols libwayland-dev libxkbcommon-dev \
     libpixman-1-dev libinput-dev libudev-dev libevdev-dev scdoc
 step_confirm "의존성 설치"
@@ -100,7 +100,7 @@ $(echo $DEPENDS_LIST | sed 's/,/ --depends /g' | sed 's/^/--depends /') \
 .
 
 if [ $? -eq 0 ]; then
-    echo -e "\n${GREEN}최종 완성: river_${VERSION}_final_amd64.deb 생성됨${NC}"
+    echo -e "\n${GREEN}최종 완성: river_${VERSION}_amd64.deb 생성됨${NC}"
 else
     echo -e "${RED}패키징 실패${NC}"
 fi
