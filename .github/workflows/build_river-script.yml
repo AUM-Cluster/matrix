@@ -1,0 +1,20 @@
+name: Run Build River Script
+
+on: [push]
+
+jobs:
+  execute-bash:
+    runs-on: ubuntu-latest # x86_64 빌드 머신 구동
+
+    container:
+      image: debian:trixie-slim # 데비안 13(Trixie) 환경 로드
+
+    steps:
+      - name: 소스 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: 스크립트 실행 권한 부여
+        run: chmod +x build_river.sh
+
+      - name: 스크립트 실행
+        run: ./build_river.sh
