@@ -29,4 +29,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debian13-river-package
-          path: "**/*.deb # .deb 파일이 생성된 정확한 경로 지정
+          path: "**/*.deb" # .deb 파일이 생성된 정확한 경로 지정
