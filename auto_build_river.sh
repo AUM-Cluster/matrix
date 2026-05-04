@@ -19,9 +19,17 @@ step_confirm() {
 
 # 1단계: 필수 라이브러리 및 도구 설치
 echo -e "\n[1단계] 빌드 환경 구성 (Debian 13)"
-apt update && apt install -y git build-essential pkg-config \
+apt update && apt install -y git build-essential pkg-config ruby ruby-dev \
     libwlroots-0.18-dev wayland-protocols libwayland-dev libxkbcommon-dev \
     libpixman-1-dev libinput-dev libudev-dev libevdev-dev scdoc
+
+# fpm 설치 시 sudo 제거 (GitHub Actions 컨테이너 환경 대응)
+if ! command -v fpm &> /dev/null; then
+    gem install --no-document fpm
+    ln -sf /usr/local/bin/fpm /usr/bin/fpm || true
+fi
+
+fpm --version && echo -e "${GREEN}빌드 환경 준비 완료${NC}"
 step_confirm "의존성 설치"
 
 # 2단계: 소스 가져오기 (v0.3.5)
