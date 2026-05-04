@@ -16,7 +16,7 @@ step_confirm() {
 
 # 1단계: 필수 라이브러리 및 도구 설치
 echo -e "\n[1단계] 빌드 환경 구성 (Debian 13)"
-apt update && sudo apt install -y git build-essential pkg-config \
+apt update && apt install -y git build-essential pkg-config \
     libwlroots-0.18-dev wayland-protocols libwayland-dev libxkbcommon-dev \
     libpixman-1-dev libinput-dev libudev-dev libevdev-dev scdoc
 step_confirm "의존성 설치"
