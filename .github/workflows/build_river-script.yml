@@ -20,7 +20,7 @@ jobs:
         run: ./zig_auto_install.sh
 
       - name: 스크립트 실행 권한 부여
-        run: chmod +x build_river.sh
+        run: chmod +x auto_build_river.sh
 
       - name: 스크립트 실행
-        run: ./build_river.sh
+        run: ./auto_build_river.sh
