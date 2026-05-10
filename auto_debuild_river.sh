@@ -12,7 +12,7 @@ echo -e "${YELLOW}=== river v0.3.5 debuild 자동화 시작 ===${NC}"
 echo -e "\n${YELLOW}[1단계] 빌드 도구 (Zig 0.13.0) 환경 구성${NC}"
 
 # 기본 빌드 필수 패키지 설치
-sudo apt update && sudo apt install -y xz-utils curl git devscripts debhelper build-essential pkg-config \
+apt update && apt install -y xz-utils curl git devscripts debhelper build-essential pkg-config \
     libwlroots-0.18-dev wayland-protocols libwayland-dev libxkbcommon-dev \
     libpixman-1-dev libinput-dev libudev-dev libevdev-dev scdoc
 
@@ -40,10 +40,10 @@ else
         ACTUAL_DIR="$ZIG_DIR_NAME"
     fi
 
-    sudo rm -rf /usr/local/zig
-    sudo mv "$ACTUAL_DIR" /usr/local/zig
+    rm -rf /usr/local/zig
+    mv "$ACTUAL_DIR" /usr/local/zig
 
-    sudo ln -sf /usr/local/zig/zig /usr/bin/zig
+    ln -sf /usr/local/zig/zig /usr/bin/zig
     rm -f zig.tar.xz
 
     # 설치 최종 확인
