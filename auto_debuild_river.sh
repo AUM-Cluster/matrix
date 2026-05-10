@@ -98,11 +98,9 @@ override_dh_auto_build:
 	zig build -Doptimize=ReleaseSafe -Dcpu=x86_64_v2
 
 override_dh_auto_install:
-	# 1. 실행 파일 복사 (river, riverctl, rivertile)
+	# 1. 실행 파일 복사
 	mkdir -p debian/river/usr/bin
-	cp zig-out/bin/river debian/river/usr/bin/
-	cp zig-out/bin/riverctl debian/river/usr/bin/
-	cp zig-out/bin/rivertile debian/river/usr/bin/
+	cp zig-out/bin/river* debian/river/usr/bin/
 
 	# 2. river-session 래퍼 스크립트 생성
 	printf "#!/bin/sh\n\
@@ -114,13 +112,35 @@ dbus-update-activation-environment --systemd --all\n\n\
 exec systemd-run --user --scope --unit=river-session dbus-run-session /usr/bin/river\n" > debian/river/usr/bin/river-session
 	chmod +x debian/river/usr/bin/river-session
 
-	# 3. Desktop Entry 생성 (로그인 화면 표시용)
+	# 3. Desktop Entry 생성
 	mkdir -p debian/river/usr/share/wayland-sessions
 	printf "[Desktop Entry]\n\
 Name=River\n\
 Comment=Dynamic Tiling Wayland Compositor\n\
 Exec=river-session\n\
 Type=Application\n" > debian/river/usr/share/wayland-sessions/river.desktop
+
+	# 4. 문서, 라이선스 및 예제 파일 (이미지 속 폴더 구조 반영)
+	mkdir -p debian/river/usr/share/doc/river/examples
+	[ -f "LICENSE" ] && cp LICENSE debian/river/usr/share/doc/river/copyright
+	[ -f "README.md" ] && cp README.md debian/river/usr/share/doc/river/
+	# example 폴더와 contrib 폴더 내용물 모두 포함
+	cp -r example/* debian/river/usr/share/doc/river/examples/ 2>/dev/null || true
+	cp -r contrib debian/river/usr/share/doc/river/ 2>/dev/null || true
+
+	# 5. 쉘 자동완성 (completions 폴더)
+	mkdir -p debian/river/usr/share/bash-completion/completions
+	[ -d "completions/bash" ] && cp completions/bash/* debian/river/usr/share/bash-completion/completions/ 2>/dev/null || true
+	
+	mkdir -p debian/river/usr/share/zsh/vendor-completions
+	[ -d "completions/zsh" ] && cp completions/zsh/* debian/river/usr/share/zsh/vendor-completions/ 2>/dev/null || true
+	
+	mkdir -p debian/river/usr/share/fish/vendor_completions.d
+	[ -d "completions/fish" ] && cp completions/fish/* debian/river/usr/share/fish/vendor_completions.d/ 2>/dev/null || true
+
+	# 6. 맨페이지 (doc 폴더)
+	mkdir -p debian/river/usr/share/man/man1
+	cp doc/*.1 debian/river/usr/share/man/man1/ 2>/dev/null || true
 EOF
 
 # rules 파일 실행 권한 부여
